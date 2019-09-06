@@ -69,7 +69,7 @@ export class AuthService {
     });
   }
 
-  login(redirectPath: string = '/') {
+  login(redirectPath: string = '/profile') {
     // A desired redirect path can be passed to login method
     // (e.g., from a route guard)
     // Ensure Auth0 client instance exists
@@ -90,6 +90,7 @@ export class AuthService {
       // Have client, now call method to handle auth callback redirect
       tap(cbRes => {
         // Get and set target redirect route from callback results
+        console.log(cbRes);
         targetRoute = cbRes.appState && cbRes.appState.target ? cbRes.appState.target : '/';
       }),
       concatMap(() => {
@@ -104,6 +105,7 @@ export class AuthService {
     // Response will be an array of user and login status
     authComplete$.subscribe(([user, loggedIn]) => {
       // Redirect to target route after callback processing
+      console.log(user, loggedIn);
       this.router.navigate([targetRoute]);
     });
   }
